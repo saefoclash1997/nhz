@@ -1,6 +1,6 @@
 # nhzchatapp
 
-A new Flutter project.
+Chat App Wow.
 
 ## Getting Started
 
