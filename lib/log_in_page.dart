@@ -34,6 +34,7 @@ class LogInPage extends StatelessWidget {
                     textColor: Colors.blue.shade400,
                     letterSpacing: 8,
                   ),
+
                   SizedBox(
                     height: 36.0,
                   ),
