@@ -7,7 +7,6 @@ import 'components/custom_text_form_field.dart';
 
 class LogInPage extends StatelessWidget {
   LogInPage({super.key});
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
