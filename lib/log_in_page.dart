@@ -86,6 +86,7 @@ class LogInPage extends StatelessWidget {
                     height: 56,
                     title: "Log In",
                     onPressed: () {},
+                    gradient: kDarkGradient,
                   )
                 ],
               ),

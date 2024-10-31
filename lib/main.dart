@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nhzchatapp/log_in_page.dart';
+import 'package:nhzchatapp/welcome_screen.dart';
 
 void main() =>
   runApp(MyApp());
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LogInPage(),
+      home: WelcomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
