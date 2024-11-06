@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:neon_widgets/neon_widgets.dart';
-import 'package:nhzchatapp/components/neon_icon.dart';
+import '../components/neon_icon.dart';
 
 import '../constant.dart';
 

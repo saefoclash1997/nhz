@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:neon_widgets/neon_widgets.dart';
-import 'package:nhzchatapp/constant.dart';
-import 'components/background_container_decoration.dart';
-import 'components/custom_button.dart';
-import 'components/custom_text_form_field.dart';
+import 'package:nhzchatapp/screens/reset_password.dart';
+import '../constant.dart';
+import '../components/background_container_decoration.dart';
+import '../components/custom_button.dart';
+import '../components/custom_text_form_field.dart';
+import 'main_chat_Screen.dart';
 
 class LogInPage extends StatelessWidget {
+  static const String id = "logInScreen";
+
   LogInPage({super.key});
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -20,19 +24,30 @@ class LogInPage extends StatelessWidget {
         height: phoneScreenHeight,
         child: Stack(
           children: [
-            BackgroundContainerDecoration(),
+            Hero(tag: 'bg', child: BackgroundContainerDecoration()),
             Padding(
               padding: const EdgeInsets.all(18.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  NeonText(
-                    text: "Log in",
-                    spreadColor: Colors.blue.shade900,
-                    blurRadius: 25,
-                    textSize: 48,
-                    textColor: Colors.blue.shade400,
-                    letterSpacing: 8,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Hero(
+                          tag: 'AppImage',
+                          child: Image.asset(
+                              height: 100,
+                              width: 100,
+                              "assets/images/icon.png")),
+                      NeonText(
+                        text: "Log In",
+                        spreadColor: Colors.blue.shade900,
+                        blurRadius: 25,
+                        textSize: 48,
+                        textColor: Colors.blue.shade400,
+                        letterSpacing: 8,
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 36.0,
@@ -68,7 +83,9 @@ class LogInPage extends StatelessWidget {
                   Container(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, ForgetPasswordPage.id);
+                        },
                         child: NeonText(
                           text: "Forget Password?",
                           textColor: kBlueFour,
@@ -80,12 +97,25 @@ class LogInPage extends StatelessWidget {
                   //   ],
                   // ),
 
-                  CustomButton(
-                    width: phoneScreenWidth,
-                    height: 56,
-                    title: "Log In",
-                    onPressed: () {},
-                    gradient: kDarkGradient,
+                  Hero(
+                    tag: 'logInButton',
+                    child: CustomButton(
+                      width: phoneScreenWidth,
+                      height: 56,
+                      title: "Log In",
+                      onPressed: () {
+                        Navigator.pushNamed(context, MainChatScreen.id);
+
+                        // Navigator.pushNamedAndRemoveUntil(context, MainChatScreen.id, (route)=>
+                        //   false,
+                        // );
+
+
+
+
+                      },
+                      gradient: kDarkGradient,
+                    ),
                   )
                 ],
               ),
@@ -96,7 +126,6 @@ class LogInPage extends StatelessWidget {
     );
   }
 }
-
 
 // GestureDetector(
 //   onTap: (){
