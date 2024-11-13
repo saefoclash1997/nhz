@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "471436961146",
+    "project_id": "nhzchatapp",
+    "storage_bucket": "nhzchatapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471436961146:android:31092a88c5685650e8e2c3",
+        "android_client_info": {
+          "package_name": "com.example.nhzchatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmJbd9GtxVOMN_LZGlNW0yALIJNUTzQ_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

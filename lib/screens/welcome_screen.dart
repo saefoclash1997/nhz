@@ -6,17 +6,50 @@ import '../screens/sign_up_page.dart';
 import '../components/background_container_decoration.dart';
 import '../components/custom_button.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   static const String id = "welcomeScreen";
   WelcomeScreen({super.key});
 
  static const String _welcomeMessage = 'Welcome To NHZ Chat App';
 
   @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
+
+  Animation? colorTween;
+  AnimationController? controller;
+
+  @override
+  void initState() {
+    controller=AnimationController(vsync: this,
+    duration: Duration(seconds: 1)
+    );
+    colorTween=ColorTween(
+      begin: kBlueFour,
+      end: ThemeData().scaffoldBackgroundColor
+    ).animate(controller!);
+    controller!.forward();
+    controller!.addListener(
+      () => setState(() {
+      }),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller!.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double phoneScreenWidth = MediaQuery.of(context).size.width;
     double phoneScreenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: colorTween!.value,
       body: SizedBox(
         width: phoneScreenWidth,
         height: phoneScreenHeight,
@@ -41,14 +74,14 @@ class WelcomeScreen extends StatelessWidget {
                     child: AnimatedTextKit(
                       animatedTexts: [
                         TypewriterAnimatedText(
-                          _welcomeMessage  ,
+                          WelcomeScreen._welcomeMessage  ,
                           textStyle: TextStyle(
 
                             fontSize: 28.0,
                             fontWeight: FontWeight.bold,
                             color: kBlueFour,
                           ),
-                          speed: const Duration(milliseconds: _welcomeMessage.length >= 100 ?  100 : 50),
+                          speed: const Duration(milliseconds: WelcomeScreen._welcomeMessage.length >= 100 ?  100 : 50),
                         ),
                       ],
                       totalRepeatCount:1,

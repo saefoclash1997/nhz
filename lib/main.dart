@@ -1,11 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:nhzchatapp/screens/log_in_page.dart';
-import 'package:nhzchatapp/screens/main_chat_Screen.dart';
-import 'package:nhzchatapp/screens/reset_password.dart';
-import 'package:nhzchatapp/screens/sign_up_page.dart';
-import 'package:nhzchatapp/screens/welcome_screen.dart';
+import '../screens/log_in_page.dart';
+import '../screens/main_chat_Screen.dart';
+import '../screens/reset_password.dart';
+import '../screens/sign_up_page.dart';
+import '../screens/welcome_screen.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,8 +26,17 @@ class MyApp extends StatelessWidget {
         ForgetPasswordPage.id: (context) => ForgetPasswordPage(),
         MainChatScreen.id: (context) => MainChatScreen(),
       },
-      initialRoute: WelcomeScreen.id,
       debugShowCheckedModeBanner: false,
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges()
+          , builder: (context, snapshot) {
+            if(snapshot.data != null){
+              return MainChatScreen();
+            }else{
+              return WelcomeScreen();
+            }
+          },
+      ),
     );
   }
 }

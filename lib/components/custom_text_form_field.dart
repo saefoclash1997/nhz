@@ -7,14 +7,16 @@ class CustomTextFormField extends StatefulWidget {
   CustomTextFormField({
     required this.textEditingController,
     required this.title,
-    required this.isPassword,
-    required this.isEmail,
+    this.isPassword = false,
+    this.isEmail = false,
+    this.validator
   });
 
   final TextEditingController textEditingController;
   final String title;
   final bool isPassword;
   final bool isEmail;
+  String? Function(String?)? validator;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -31,13 +33,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator:widget.validator ,
       obscureText: widget.isPassword ? isChecked : false,
       controller: widget.textEditingController,
       keyboardType: widget.isPassword
-          ? TextInputType.name
+          ? TextInputType.text
           : widget.isEmail
               ? TextInputType.emailAddress
-              : TextInputType.name,
+              : TextInputType.text,
       decoration: InputDecoration(
         label: Text(widget.title),
         suffixIcon: widget.isPassword
@@ -52,10 +55,22 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         labelStyle: TextStyle(
           color: Colors.blue.shade700,
         ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+          ),
+          borderRadius: BorderRadius.circular(9.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+          ),
+          borderRadius: BorderRadius.circular(18.0),
+        ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.blue.shade400,
-            width: 1.5,
+            width: 3,
           ),
           borderRadius: BorderRadius.circular(9.0),
         ),
