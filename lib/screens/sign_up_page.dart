@@ -3,32 +3,54 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:neon_widgets/neon_widgets.dart';
 import 'package:nhzchatapp/authentication.dart';
+import 'package:nhzchatapp/components/spinner.dart';
 import 'package:nhzchatapp/screens/main_chat_Screen.dart';
 import '../constant.dart';
 import '../components/background_container_decoration.dart';
 import '../components/custom_button.dart';
 import '../components/custom_text_form_field.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   static const String id = "signUpScreen";
 
   SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   TextEditingController nameController = TextEditingController();
+
   TextEditingController confirmPasswordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
+
+  bool isLoading = false;
+
   signUp(BuildContext context) async {
     if(_formKey.currentState!.validate()){
+      setState(() {
+        isLoading = true;
+      });
       try {
         var  auth = await FirebaseServices().signUp(emailController.text, passwordController.text);
         if(auth!=null){
+          setState(() {
+            isLoading = false;
+          });
           Navigator.pushNamedAndRemoveUntil(context, MainChatScreen.id, (route)=>
           false,
           );
         }
       } on FirebaseAuthException catch (e) {
-
+        setState(() {
+          isLoading = false;
+        });
         if(e.code == 'email-already-in-use'){
           AwesomeDialog(
             context: context,
@@ -61,11 +83,12 @@ class SignUpPage extends StatelessWidget {
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     double phoneScreenWidth = MediaQuery.of(context).size.width;
     double phoneScreenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return isLoading? MySpinner() : Scaffold(
       body: SizedBox(
         width: phoneScreenWidth,
         height: phoneScreenHeight,

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:nhzchatapp/components/spinner.dart';
 import '../screens/log_in_page.dart';
 import '../screens/main_chat_Screen.dart';
 import '../screens/reset_password.dart';
@@ -29,14 +30,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges()
-          , builder: (context, snapshot) {
-            if(snapshot.data != null){
-              return MainChatScreen();
-            }else{
-              return WelcomeScreen();
-            }
-          },
+        , builder: (context, snapshot) {
+        if(snapshot.data != null){
+          return MainChatScreen();
+        }else{
+          return WelcomeScreen();
+        }
+      },
       ),
     );
   }
 }
+
+

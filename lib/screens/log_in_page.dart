@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:neon_widgets/neon_widgets.dart';
+import 'package:nhzchatapp/components/spinner.dart';
 import 'package:nhzchatapp/screens/reset_password.dart';
 import '../authentication.dart';
 import '../constant.dart';
@@ -9,22 +10,42 @@ import '../components/custom_button.dart';
 import '../components/custom_text_form_field.dart';
 import 'main_chat_Screen.dart';
 
-class LogInPage extends StatelessWidget {
+class LogInPage extends StatefulWidget {
   static const String id = "logInScreen";
 
   LogInPage({super.key});
+
+  @override
+  State<LogInPage> createState() => _LogInPageState();
+}
+
+class _LogInPageState extends State<LogInPage> {
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
+
+  bool isLoading = false;
+
   logIn(BuildContext context) async {
     if(_formKey.currentState!.validate()){
+      setState(() {
+        isLoading=true;
+      });
       try {
         var  auth = await FirebaseServices().signIn(emailController.text, passwordController.text);
         if(auth!=null){
+          setState(() {
+            isLoading=false;
+          });
           Navigator.pushNamedAndRemoveUntil(context, MainChatScreen.id, (route)=>
           false,
           );                              }
       } on FirebaseAuthException catch (e) {
+        setState(() {
+          isLoading=false;
+        });
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Email or Password are Incorrect"))
         );
@@ -37,7 +58,7 @@ class LogInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double phoneScreenWidth = MediaQuery.of(context).size.width;
     double phoneScreenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return isLoading ? MySpinner() : Scaffold(
       body: SizedBox(
         width: phoneScreenWidth,
         height: phoneScreenHeight,
