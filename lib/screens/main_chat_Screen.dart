@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:nhzchatapp/components/spinner.dart';
 import 'package:nhzchatapp/constant.dart';
 import 'package:nhzchatapp/screens/welcome_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../components/my_drawer.dart';
+import '../control/provider_services.dart';
 
 class MainChatScreen extends StatefulWidget {
   static const String id = 'mainChatScreen';
@@ -21,6 +25,7 @@ class _MainChatScreenState extends State<MainChatScreen> {
     currentUser = await FirebaseAuth.instance.currentUser!.email;
     print(currentUser);
   }
+
   @override
   void initState() {
     getUserEmail();
@@ -41,7 +46,6 @@ class _MainChatScreenState extends State<MainChatScreen> {
       // ),
       child: Scaffold(
         appBar: AppBar(
-
           title: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Row(
@@ -62,34 +66,11 @@ class _MainChatScreenState extends State<MainChatScreen> {
             ),
           ),
         ),
-        endDrawer: Drawer(
-          child: ListView(
-            children: [
-              ListTile(
-                leading: Checkbox(value: isChecked, onChanged: (val){
-                  setState(() {
-                    isChecked = !isChecked;
-                  });
-                }),
-                title: const Text("Dark Theme"),
-              ),
-              ListTile(
-                leading: const Icon(CupertinoIcons.power),
-                title: const Text("Log Out"),
-                onTap: () {
-                  FirebaseAuth.instance.signOut();
-
-                  Navigator.pushReplacementNamed(context, WelcomeScreen.id);
-                },
-              ),
-
-            ],
-          ),
-        ),
+        endDrawer: CustomDrawer(),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('messages')
-              .orderBy('time',descending: true)
+              .orderBy('time', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData &&
@@ -105,42 +86,43 @@ class _MainChatScreenState extends State<MainChatScreen> {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 return Container(
-
-                  alignment: currentUser == data[index]['sender'] ?
-                  Alignment.centerRight :  Alignment.centerLeft ,
+                  alignment: currentUser == data[index]['sender']
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
                   child: Container(
-                    constraints: BoxConstraints(
-                        maxWidth: phoneScreenWidth *4/5
-                    ),
+                    constraints:
+                        BoxConstraints(maxWidth: phoneScreenWidth * 4 / 5),
                     padding: const EdgeInsets.all(8),
                     margin: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: currentUser == data[index]['sender'] ?  kBlueFour : Colors.blue.shade100,
-                      borderRadius: currentUser == data[index]['sender'] ? const BorderRadius.only(
-                        topRight: Radius.circular(18.0),
-                        bottomLeft: Radius.circular(18.0),
-                        topLeft: Radius.circular(18.0),
-
-                      ):const BorderRadius.only(
-                        bottomRight: Radius.circular(18.0),
-                        topRight: Radius.circular(18.0),
-                        topLeft: Radius.circular(18.0),
-
-                      ),
+                        color: currentUser == data[index]['sender']
+                            ? kBlueFour
+                            : Colors.blue.shade100,
+                        borderRadius: currentUser == data[index]['sender']
+                            ? const BorderRadius.only(
+                                topRight: Radius.circular(18.0),
+                                bottomLeft: Radius.circular(18.0),
+                                topLeft: Radius.circular(18.0),
+                              )
+                            : const BorderRadius.only(
+                                bottomRight: Radius.circular(18.0),
+                                topRight: Radius.circular(18.0),
+                                topLeft: Radius.circular(18.0),
+                              ),
                         boxShadow: [
-                        const BoxShadow(
-                          color: Colors.black,
-                          offset: Offset(2,2),
-                          blurRadius: 10,
-                        ),
-                      ]
-                    ),
+                          const BoxShadow(
+                            color: Colors.black,
+                            offset: Offset(2, 2),
+                            blurRadius: 10,
+                          ),
+                        ]),
                     child: Text(
                       data[index]['message'],
                       style: TextStyle(
-                        color:  currentUser == data[index]['sender'] ? Colors.white : kBlueFour,
-                        fontSize: 18.0
-                      ),
+                          color: currentUser == data[index]['sender']
+                              ? Colors.white
+                              : kBlueFour,
+                          fontSize: 18.0),
                     ),
                   ),
                 );
@@ -156,20 +138,19 @@ class _MainChatScreenState extends State<MainChatScreen> {
                   child: TextField(
                 controller: messageController,
                 decoration: InputDecoration(
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none
+                  focusedErrorBorder:
+                      OutlineInputBorder(borderSide: BorderSide.none),
+                  enabledBorder:
+                      OutlineInputBorder(borderSide: BorderSide.none),
+                  hintText: "Type Your Message",
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  fillColor: Colors.blue.shade100,
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
                   ),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none
-                  ),
-                    hintText: "Type Your Message",
-                    hintStyle: const TextStyle(color: Colors.grey),
-                    fillColor: Colors.blue.shade100,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide.none,
-                    ),),
+                ),
               )),
               const SizedBox(
                 width: 8.0,
